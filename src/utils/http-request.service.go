@@ -2,10 +2,10 @@ package utils
 
 import (
 	"bytes"
-	"log"
 	"net/http"
 	"time"
 	"unisun/api/auth-listener/src/constants"
+	"unisun/api/auth-listener/src/logging"
 )
 
 func HTTPRequest(url string, method string, payload []byte) *http.Response {
@@ -35,16 +35,17 @@ func HTTPRequest(url string, method string, payload []byte) *http.Response {
 		body = bytes.NewBuffer(nil)
 	}
 	if err != nil {
-		log.Panic("Create request error.", err.Error())
+		logging.Println("Create request error.", err.Error())
 	}
 	request, err = http.NewRequest(method, url, body)
 	if err != nil {
-		log.Panic("Client request to "+url+" is not success.", err.Error())
+		logging.Println("Client request to "+url+" is not success.", err.Error())
 	}
 	request.Header.Add("Content-type", "application/json")
 	response, err := client.Do(request)
 	if err != nil {
-		log.Panic("Client is error.", err.Error())
+		logging.Println("Client is error.", err.Error())
+		return response
 	}
 	return response
 }

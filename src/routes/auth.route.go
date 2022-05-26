@@ -1,11 +1,17 @@
 package routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"unisun/api/auth-listener/src/controllers"
+
+	"github.com/gin-gonic/gin"
+)
 
 func Auth(g *gin.RouterGroup) {
-	g.POST("/signin")
-	g.POST("/register")
-	g.POST("/revoke")
-	g.POST("/refresh-token")
-	g.GET("/connect/providers/callback")
+	g.POST("/signin", controllers.Signin)
+	g.POST("/register", controllers.Register)
+	g.POST("/revoke", controllers.Signout)
+	g.POST("/refresh-token", controllers.RefreshToken)
+	g.GET("/connect/providers/callback", controllers.CallbackProviderLogin)
+	g.POST("/forget-password", controllers.ForgetPassword)
+	g.POST("/reset-password", controllers.ResetPassword)
 }
