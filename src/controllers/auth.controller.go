@@ -2,11 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
-	"strings"
 	"unisun/api/auth-listener/src/constants"
 	"unisun/api/auth-listener/src/logging"
 	"unisun/api/auth-listener/src/models"
@@ -16,6 +15,7 @@ import (
 )
 
 func Signin(c *gin.Context) {
+	log.Println("Start call sign in.")
 	payloadRequestSignin := models.ServiceIncomeRequest{}
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
@@ -24,79 +24,89 @@ func Signin(c *gin.Context) {
 	payloadRequestSignin.Path = os.Getenv(constants.PATH_STRAPI_SIGNIN)
 	payloadRequestSignin.Method = constants.POST
 	payloadRequestSignin.Body = jsonData
-	payloadSignin := models.Signin{}
-	data := services.GetInformationFormStrapi(payloadRequestSignin)
-	err = json.Unmarshal([]byte(data.Payload), &payloadSignin)
-	if err != nil {
-		logging.Println("Change byte to json", err.Error())
-		c.JSON(http.StatusUnprocessableEntity, data)
+	bodySignin, bodyFail, error := services.ProcessSignin(payloadRequestSignin)
+	if error != nil {
+		logging.Println("Process signin error.", error.Error())
+		c.JSON(bodyFail.Error.Status, bodyFail)
+		return
+	} else if bodyFail.Error.Name != "" {
+		c.JSON(bodyFail.Error.Status, bodyFail)
 		return
 	}
-	if payloadSignin.Jwt != "" && payloadSignin.User.Confirmed && payloadSignin.User.Email != "" {
-		signinCallRequest := models.SigninCallRequest{}
-		if userPermission, err := services.GetUserPermission(payloadSignin.User.Id); err != nil {
-			logging.Println("Call get user-auth-permission is Error.", err.Error())
-		} else {
-			if userPermission.UserId != 0 && userPermission.TokenVersion != 0 {
-				if jwt, err := services.GenerateRefreshJWT(userPermission.TokenVersion+1, userPermission.UserId); err != nil {
-					logging.Println("Generate refresh token Error.", err.Error())
-					c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
-						Detail:  err,
-						Name:    "AppError",
-						Message: err.Error(),
-						Status:  http.StatusBadRequest,
-					}})
-				} else {
-					payloadSignin.JwtRefresh = jwt
-					signinCallRequest.Token = jwt
-					signinCallRequest.UserId = userPermission.UserId
-				}
-			} else {
-				if jwt, err := services.GenerateRefreshJWT(1, payloadSignin.User.Id); err != nil {
-					logging.Println("Generate refresh token Error.", err.Error())
-					c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
-						Detail:  err,
-						Name:    "AppError",
-						Message: err.Error(),
-						Status:  http.StatusBadRequest,
-					}})
-				} else {
-					payloadSignin.JwtRefresh = jwt
-					signinCallRequest.Token = jwt
-					signinCallRequest.UserId = payloadSignin.User.Id
-				}
-			}
-		}
-		if responseCallSignin, err := services.CallSignIn(signinCallRequest); err != nil {
-			c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
-				Detail:  err,
-				Name:    "AppError",
-				Message: err.Error(),
-				Status:  http.StatusBadRequest,
-			}})
-			logging.Println("Call signin is Error.", err.Error())
-		} else {
-			if responseCallSignin.Result["confirm"] == "true" {
-				c.JSON(http.StatusOK, payloadSignin)
-			} else {
-				c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
-					Detail:  nil,
-					Name:    "CallError",
-					Message: "confirm=" + responseCallSignin.Result["confirm"] + responseCallSignin.Error,
-					Status:  http.StatusBadRequest,
-				}})
-			}
-		}
-	} else {
-		signWarning := models.SignWarning{}
-		err = json.Unmarshal([]byte(data.Payload), &signWarning)
-		if err != nil {
-			logging.Println("Change byte to json", err.Error())
-			c.JSON(http.StatusUnprocessableEntity, data)
-			return
-		}
-		c.JSON(http.StatusFound, signWarning)
-	}
+	c.JSON(http.StatusOK, bodySignin)
+	// data := services.GetInformationFormStrapi(payloadRequestSignin)
+	// payloadSignin := models.Signin{}
+	// err = json.Unmarshal([]byte(data.Payload), &payloadSignin)
+	// if err != nil {
+	// 	logging.Println("Change byte to json", err.Error())
+	// 	c.JSON(http.StatusUnprocessableEntity, data)
+	// 	return
+	// }
+	// if payloadSignin.Jwt != "" && payloadSignin.User.Confirmed && payloadSignin.User.Email != "" {
+	// 	signinCallRequest := models.SigninCallRequest{}
+	// 	if userPermission, err := services.GetUserPermission(payloadSignin.User.Id); err != nil {
+	// 		logging.Println("Call get user-auth-permission is Error.", err.Error())
+	// 	} else {
+	// 		if userPermission.UserId != 0 && userPermission.TokenVersion != 0 {
+	// 			if jwt, err := services.GenerateRefreshJWT(userPermission.TokenVersion+1, userPermission.UserId); err != nil {
+	// 				logging.Println("Generate refresh token Error.", err.Error())
+	// 				c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
+	// 					Detail:  err,
+	// 					Name:    "AppError",
+	// 					Message: err.Error(),
+	// 					Status:  http.StatusBadRequest,
+	// 				}})
+	// 			} else {
+	// 				payloadSignin.JwtRefresh = jwt
+	// 				signinCallRequest.Token = jwt
+	// 				signinCallRequest.UserId = userPermission.UserId
+	// 			}
+	// 		} else {
+	// 			if jwt, err := services.GenerateRefreshJWT(1, payloadSignin.User.Id); err != nil {
+	// 				logging.Println("Generate refresh token Error.", err.Error())
+	// 				c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
+	// 					Detail:  err,
+	// 					Name:    "AppError",
+	// 					Message: err.Error(),
+	// 					Status:  http.StatusBadRequest,
+	// 				}})
+	// 			} else {
+	// 				payloadSignin.JwtRefresh = jwt
+	// 				signinCallRequest.Token = jwt
+	// 				signinCallRequest.UserId = payloadSignin.User.Id
+	// 			}
+	// 		}
+	// 	}
+	// 	if responseCallSignin, err := services.CallSignIn(signinCallRequest); err != nil {
+	// 		c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
+	// 			Detail:  err,
+	// 			Name:    "AppError",
+	// 			Message: err.Error(),
+	// 			Status:  http.StatusBadRequest,
+	// 		}})
+	// 		logging.Println("Call signin is Error.", err.Error())
+	// 	} else {
+	// 		if responseCallSignin.Result["confirm"] == "true" {
+	// 			c.JSON(http.StatusOK, payloadSignin)
+	// 		} else {
+	// 			c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
+	// 				Detail:  nil,
+	// 				Name:    "CallError",
+	// 				Message: "confirm=" + responseCallSignin.Result["confirm"] + responseCallSignin.Error,
+	// 				Status:  http.StatusBadRequest,
+	// 			}})
+	// 		}
+	// 	}
+	// } else {
+	// 	signWarning := models.SignWarning{}
+	// 	err = json.Unmarshal([]byte(data.Payload), &signWarning)
+	// 	if err != nil {
+	// 		logging.Println("Change byte to json", err.Error())
+	// 		c.JSON(http.StatusUnprocessableEntity, data)
+	// 		return
+	// 	}
+	// 	c.JSON(http.StatusFound, signWarning)
+	// }
 }
 
 func Signout(c *gin.Context) {
@@ -248,10 +258,51 @@ func Register(c *gin.Context) {
 	}
 }
 
-func CallbackProviderLogin(c *gin.Context) {
-	query := c.Request.URL.Query()
-	for key, val := range query {
-		fmt.Println("key = " + key + ";value = " + strings.Join(val, ", "))
+func CallbackProviderGoogleLogin(c *gin.Context) {
+	query := c.Request.URL.RawQuery
+	if query == "" {
+		logging.Println("Query is empty.", "")
+		c.JSON(http.StatusUnprocessableEntity, &models.ResponseFail{
+			Error: models.ErrorDetail{
+				Status:  422,
+				Name:    "Callback Provider Login",
+				Message: "Param query is empty.",
+			},
+		})
 	}
-	c.Redirect(http.StatusMovedPermanently, "https://cms.unisun.dynu.com")
+	bodyRequest := models.ServiceIncomeRequest{}
+	bodyRequest.Method = constants.GET
+	bodyRequest.Path = os.Getenv(constants.PATH_STRAPI_CALLBACK_GOOGLE) + "?" + query
+	bodySignin, bodyFail, error := services.ProcessSignin(bodyRequest)
+	if error != nil {
+		logging.Println("Process signin error.", error.Error())
+		c.JSON(bodyFail.Error.Status, bodyFail)
+		return
+	}
+	c.JSON(http.StatusOK, bodySignin)
+}
+
+func CallbackProviderFacebookLogin(c *gin.Context) {
+	query := c.Request.URL.RawQuery
+	if query == "" {
+		logging.Println("Query is empty.", "")
+		c.JSON(http.StatusUnprocessableEntity, &models.ResponseFail{
+			Error: models.ErrorDetail{
+				Status:  422,
+				Name:    "Callback Provider Login",
+				Message: "Param query is empty.",
+			},
+		})
+	}
+	bodyRequest := models.ServiceIncomeRequest{}
+	bodyRequest.Method = constants.GET
+	bodyRequest.Path = os.Getenv(constants.PATH_STRAPI_CALLBACK_FACEBOOK) + "?" + query
+	bodyRequest.Body = nil
+	bodySignin, bodyFail, error := services.ProcessSignin(bodyRequest)
+	if error != nil {
+		logging.Println("Process signin error.", error.Error())
+		c.JSON(bodyFail.Error.Status, bodyFail)
+		return
+	}
+	c.JSON(http.StatusOK, bodySignin)
 }

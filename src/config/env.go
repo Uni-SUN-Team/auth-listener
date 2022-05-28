@@ -26,4 +26,8 @@ func SetENV() {
 	os.Setenv(constants.AUTHEN_GATEWAY_PATH_GET_TOKENVERSION, "/authen-listening/api/validate/token-version/")
 	os.Setenv(constants.AUTHEN_GATEWAY_PATH_CALL_REVOKE, "/authen-listening/api/validate/call-revoke")
 	os.Setenv(constants.AUTHEN_GATEWAY_PATH_CALL_REFRESHTOKEN, "/authen-listening/api/validate/call-check-refreshtoken")
+
+	os.Setenv(constants.LOG_PATH, "/Users/ns/Documents/UniSUN/auth-listener/tmp/app.log")
+	os.Setenv(constants.PATH_STRAPI_CALLBACK_GOOGLE, "/api/auth/google/callback")
+	os.Setenv(constants.PATH_STRAPI_CALLBACK_FACEBOOK, "/api/auth/facebook/callback")
 }

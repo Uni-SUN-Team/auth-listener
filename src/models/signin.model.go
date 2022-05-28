@@ -41,4 +41,5 @@ type SignWarningError struct {
 	Name    string      `json:"name"`
 	Message string      `json:"message"`
 	Details interface{} `json:"details"`
+	Error   error       `json:"error"`
 }

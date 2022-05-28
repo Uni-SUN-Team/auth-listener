@@ -11,7 +11,8 @@ func Auth(g *gin.RouterGroup) {
 	g.POST("/register", controllers.Register)
 	g.POST("/revoke", controllers.Signout)
 	g.POST("/refresh-token", controllers.RefreshToken)
-	g.GET("/connect/providers/callback", controllers.CallbackProviderLogin)
+	g.GET("/connect/providers/google/callback", controllers.CallbackProviderGoogleLogin)
+	g.GET("/connect/providers/facebook/callback", controllers.CallbackProviderFacebookLogin)
 	g.POST("/forget-password", controllers.ForgetPassword)
 	g.POST("/reset-password", controllers.ResetPassword)
 }

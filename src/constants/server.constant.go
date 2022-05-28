@@ -8,4 +8,5 @@ const (
 	VERSION      = "VERSION"
 	HOST         = "HOST"
 	JWT_SECRET   = "JWT_SECRET"
+	LOG_PATH     = "LOG_PATH"
 )

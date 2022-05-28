@@ -1,0 +1,17 @@
+2022/05/28 17:11:17 log.go:18: Change byte to json response. invalid character '<' looking for beginning of value
+2022/05/28 17:11:17 log.go:18: Change byte to json unexpected end of JSON input
+2022/05/28 17:12:45 log.go:18: Change byte to json response. invalid character '<' looking for beginning of value
+2022/05/28 17:12:45 log.go:18: Change byte to json unexpected end of JSON input
+2022/05/28 20:35:48 log.go:18: Change byte to json response. unexpected end of JSON input
+2022/05/28 20:35:48 log.go:18: Change byte to json unexpected end of JSON input
+2022/05/28 20:35:48 log.go:18: Process signin error. unexpected end of JSON input
+2022/05/28 21:02:53 log.go:18: Strapi comvert is error. json: cannot unmarshal bool into Go struct field RegisterStrapiResponseUserDatail.user.agreement of type string
+2022/05/28 21:10:31 log.go:18: Change byte to json response. unexpected end of JSON input
+2022/05/28 21:10:31 log.go:18: Change byte to json unexpected end of JSON input
+2022/05/28 21:10:31 log.go:18: Process signin error. unexpected end of JSON input
+2022/05/28 21:11:11 log.go:18: Query is empty. 
+2022/05/28 21:11:59 log.go:18: Query is empty. 
+2022/05/28 21:13:26 log.go:18: Query is empty. 
+2022/05/28 21:17:49 log.go:18: Change byte to json response. unexpected end of JSON input
+2022/05/28 21:17:49 log.go:18: Change byte to json unexpected end of JSON input
+2022/05/28 21:17:49 log.go:18: Process signin error. unexpected end of JSON input
