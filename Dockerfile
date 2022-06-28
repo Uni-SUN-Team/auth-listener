@@ -19,6 +19,7 @@ ENV AUTHEN_GATEWAY_PATH_CALL_REFRESHTOKEN=/authen-listening/api/validate/call-ch
 ENV LOG_PATH=/Users/ns/Documents/UniSUN/auth-listener/tmp/app.log
 ENV PATH_STRAPI_CALLBACK_GOOGLE=/api/auth/google/callback
 ENV PATH_STRAPI_CALLBACK_FACEBOOK=/api/auth/facebook/callback
+ENV VERSION=1.0.1
 
 WORKDIR /usr/src/app
 

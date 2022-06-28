@@ -14,6 +14,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Auth godoc
+// @summary      Auth
+// @description  Auth for the service
+// @id           SigninHandler
+// @tags         auth
+// @accept       json
+// @produce      json
+// @success      200    {object} 	models.Signin    			"OK"
+// @failure      400    {object} 	models.SignWarning    		"Bad Request"
+// @failure      422    {object} 	models.SignWarning    		"Unprocessable Entity"
+// @response     500   	"Internal Server Error"
+// @router       /auth/signin [post]
 func Signin(c *gin.Context) {
 	log.Println("Start call sign in.")
 	payloadRequestSignin := models.ServiceIncomeRequest{}
@@ -34,81 +46,19 @@ func Signin(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, bodySignin)
-	// data := services.GetInformationFormStrapi(payloadRequestSignin)
-	// payloadSignin := models.Signin{}
-	// err = json.Unmarshal([]byte(data.Payload), &payloadSignin)
-	// if err != nil {
-	// 	logging.Println("Change byte to json", err.Error())
-	// 	c.JSON(http.StatusUnprocessableEntity, data)
-	// 	return
-	// }
-	// if payloadSignin.Jwt != "" && payloadSignin.User.Confirmed && payloadSignin.User.Email != "" {
-	// 	signinCallRequest := models.SigninCallRequest{}
-	// 	if userPermission, err := services.GetUserPermission(payloadSignin.User.Id); err != nil {
-	// 		logging.Println("Call get user-auth-permission is Error.", err.Error())
-	// 	} else {
-	// 		if userPermission.UserId != 0 && userPermission.TokenVersion != 0 {
-	// 			if jwt, err := services.GenerateRefreshJWT(userPermission.TokenVersion+1, userPermission.UserId); err != nil {
-	// 				logging.Println("Generate refresh token Error.", err.Error())
-	// 				c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
-	// 					Detail:  err,
-	// 					Name:    "AppError",
-	// 					Message: err.Error(),
-	// 					Status:  http.StatusBadRequest,
-	// 				}})
-	// 			} else {
-	// 				payloadSignin.JwtRefresh = jwt
-	// 				signinCallRequest.Token = jwt
-	// 				signinCallRequest.UserId = userPermission.UserId
-	// 			}
-	// 		} else {
-	// 			if jwt, err := services.GenerateRefreshJWT(1, payloadSignin.User.Id); err != nil {
-	// 				logging.Println("Generate refresh token Error.", err.Error())
-	// 				c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
-	// 					Detail:  err,
-	// 					Name:    "AppError",
-	// 					Message: err.Error(),
-	// 					Status:  http.StatusBadRequest,
-	// 				}})
-	// 			} else {
-	// 				payloadSignin.JwtRefresh = jwt
-	// 				signinCallRequest.Token = jwt
-	// 				signinCallRequest.UserId = payloadSignin.User.Id
-	// 			}
-	// 		}
-	// 	}
-	// 	if responseCallSignin, err := services.CallSignIn(signinCallRequest); err != nil {
-	// 		c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
-	// 			Detail:  err,
-	// 			Name:    "AppError",
-	// 			Message: err.Error(),
-	// 			Status:  http.StatusBadRequest,
-	// 		}})
-	// 		logging.Println("Call signin is Error.", err.Error())
-	// 	} else {
-	// 		if responseCallSignin.Result["confirm"] == "true" {
-	// 			c.JSON(http.StatusOK, payloadSignin)
-	// 		} else {
-	// 			c.JSON(http.StatusBadRequest, &models.ResponseFail{Error: models.ErrorDetail{
-	// 				Detail:  nil,
-	// 				Name:    "CallError",
-	// 				Message: "confirm=" + responseCallSignin.Result["confirm"] + responseCallSignin.Error,
-	// 				Status:  http.StatusBadRequest,
-	// 			}})
-	// 		}
-	// 	}
-	// } else {
-	// 	signWarning := models.SignWarning{}
-	// 	err = json.Unmarshal([]byte(data.Payload), &signWarning)
-	// 	if err != nil {
-	// 		logging.Println("Change byte to json", err.Error())
-	// 		c.JSON(http.StatusUnprocessableEntity, data)
-	// 		return
-	// 	}
-	// 	c.JSON(http.StatusFound, signWarning)
-	// }
 }
 
+// Auth godoc
+// @summary      Auth
+// @description  Auth for the service
+// @id           SignoutHandler
+// @tags         auth
+// @accept       json
+// @produce      json
+// @success      200    {object} 	map[string]string   			"OK"
+// @failure      400    {object} 	models.CallAuthenGatewayResponse   		"Bad Request"
+// @response     500	"Internal Server Error"
+// @router       /auth/revoke [post]
 func Signout(c *gin.Context) {
 	payload := models.Revoke{}
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
@@ -130,6 +80,17 @@ func Signout(c *gin.Context) {
 	}
 }
 
+// Auth godoc
+// @summary      Auth
+// @description  Auth for the service
+// @id           SignoutHandler
+// @tags         auth
+// @accept       json
+// @produce      json
+// @success      200    {object} 	map[string]string   			"OK"
+// @failure      400    {object} 	models.CallAuthenGatewayResponse   		"Bad Request"
+// @response     500	"Internal Server Error"
+// @router       /auth/signin [post]
 func RefreshToken(c *gin.Context) {
 	body := models.RefreshTokenBodyRequest{}
 	requestBody, err := ioutil.ReadAll(c.Request.Body)

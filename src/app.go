@@ -22,7 +22,7 @@ import (
 // @contact.email   support@swagger.io
 
 // @license.name  MIT License Copyright (c) 2022 Uni-SUN-Team
-// @license.url   https://api.unisun.dynu.com/course-listenner/api/license
+// @license.url   https://api.unisun.dynu.com/auth/license
 
 // @securityDefinitions.apikey  ApiKeyAuth
 // @in                          header
@@ -32,7 +32,7 @@ func App() *gin.Engine {
 	docs.SwaggerInfo.Description = "Service for manage authenicate in application."
 	docs.SwaggerInfo.Version = os.Getenv(constants.VERSION)
 	docs.SwaggerInfo.Host = os.Getenv(constants.HOST)
-	docs.SwaggerInfo.BasePath = os.Getenv(constants.CONTEXT_PATH) + "/api"
+	docs.SwaggerInfo.BasePath = os.Getenv(constants.CONTEXT_PATH)
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	r := gin.Default()
