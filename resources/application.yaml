@@ -1,0 +1,10 @@
+app:
+  env: "development"
+  port: 8082
+  context_path: "/authen-listener"
+gin:
+  mode: "debug"
+  version: "v1"
+  root_path: "api"
+  configs:
+    trusted_proxies: "127.0.0.1"
