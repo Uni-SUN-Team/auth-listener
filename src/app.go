@@ -2,10 +2,10 @@ package src
 
 import (
 	"os"
-	"unisun/api/auth-listener/docs"
-	"unisun/api/auth-listener/src/constants"
-	"unisun/api/auth-listener/src/controllers"
-	"unisun/api/auth-listener/src/routes"
+	"unisun/api/unisun-authen-listener/docs"
+	"unisun/api/unisun-authen-listener/src/constants"
+	"unisun/api/unisun-authen-listener/src/controllers"
+	"unisun/api/unisun-authen-listener/src/routes"
 
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"

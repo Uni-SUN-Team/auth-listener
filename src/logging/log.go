@@ -3,7 +3,7 @@ package logging
 import (
 	"log"
 	"os"
-	"unisun/api/auth-listener/src/constants"
+	"unisun/api/unisun-authen-listener/src/constants"
 )
 
 func Println(message string, error string) {

@@ -1,20 +1,21 @@
 package main
 
 import (
-	"os"
-	"unisun/api/auth-listener/src"
-	"unisun/api/auth-listener/src/config"
-	"unisun/api/auth-listener/src/constants"
+	"log"
+	"unisun/api/unisun-authen-listener/src"
+	"unisun/api/unisun-authen-listener/src/config/environment"
+	"unisun/api/unisun-authen-listener/src/constants"
 )
 
 func main() {
-	if os.Getenv(constants.NODE) != constants.PRODUCTION {
-		config.SetENV()
+	err := environment.LoadEnvironment()
+	if err != nil {
+		log.Fatal(err)
 	}
 	r := src.App()
-	port := os.Getenv(constants.PORT)
+	port := environment.ENV.App.Port
 	if port == "" {
-		r.Run(":8080")
+		r.Run(":" + constants.PORT)
 	} else {
 		r.Run(":" + port)
 	}

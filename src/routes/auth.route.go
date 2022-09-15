@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"unisun/api/auth-listener/src/controllers"
+	"unisun/api/unisun-authen-listener/src/controllers"
 
 	"github.com/gin-gonic/gin"
 )

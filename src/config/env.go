@@ -2,7 +2,7 @@ package config
 
 import (
 	"os"
-	"unisun/api/auth-listener/src/constants"
+	"unisun/api/unisun-authen-listener/src/constants"
 )
 
 func SetENV() {

@@ -1,4 +1,4 @@
-module unisun/api/auth-listener
+module unisun/api/unisun-authen-listener
 
 go 1.17
 

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"net/http"
 	"time"
-	"unisun/api/auth-listener/src/constants"
-	"unisun/api/auth-listener/src/logging"
+	"unisun/api/unisun-authen-listener/src/constants"
+	"unisun/api/unisun-authen-listener/src/logging"
 )
 
 func HTTPRequest(url string, method string, payload []byte) *http.Response {

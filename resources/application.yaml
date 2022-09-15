@@ -1,10 +1,12 @@
 app:
   env: "development"
   port: 8082
-  context_path: "/authen-listener"
+  context_path: "/unisun-authen-listener"
 gin:
   mode: "debug"
   version: "v1"
   root_path: "api"
   configs:
     trusted_proxies: "127.0.0.1"
+jwt:
+  secret: "aSiAZgPRmmw7gN7p9WeQxQ=="

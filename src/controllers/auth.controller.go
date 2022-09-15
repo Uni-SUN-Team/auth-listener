@@ -6,10 +6,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"unisun/api/auth-listener/src/constants"
-	"unisun/api/auth-listener/src/logging"
-	"unisun/api/auth-listener/src/models"
-	"unisun/api/auth-listener/src/services"
+	"unisun/api/unisun-authen-listener/src/constants"
+	"unisun/api/unisun-authen-listener/src/logging"
+	"unisun/api/unisun-authen-listener/src/models"
+	"unisun/api/unisun-authen-listener/src/services"
 
 	"github.com/gin-gonic/gin"
 )
