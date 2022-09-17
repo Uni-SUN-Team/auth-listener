@@ -8,5 +8,33 @@ gin:
   root_path: "api"
   configs:
     trusted_proxies: "127.0.0.1"
-jwt:
-  secret: "aSiAZgPRmmw7gN7p9WeQxQ=="
+swag:
+  title: "Auth Processor API"
+  description: "This is a server celler to strapi server."
+  version: "v0.0.1"
+  host: "http://localhost"
+  schemes: "http,https"
+secure:
+  jwt:
+    secret: "aSiAZgPRmmw7gN7p9WeQxQ=="
+endpoint:
+  unisun-strapi-inquiry:
+    host: "http://localhost:8080"
+    path: "/unisun-strapi-inquiry/api/v1/strapi"
+    endpoind_strapi:
+      signin:
+        path: "/api/auth/local"
+      refresh_token: 
+        path: "/api/auth/refreshToken"
+      forgot_password:
+        path: "/api/auth/forgot-password"
+      reset_password:
+        path: "/api/auth/reset-password"
+      register:
+        path: "/api/auth/local/register"
+  unisun-authen-management-information:
+    host: "http://localhost:8081"
+    inquiry-version:
+      path: "/unisun-authen-management-information/api/v1/user-auth-permission/:version"
+  unisun-authen-validate-listener:
+

@@ -6,17 +6,6 @@ type Configs struct {
 		Port        string `mapstructure:"port"`
 		ContextPath string `mapstructure:"context_path"`
 	} `mapstructure:"app"`
-	Endpoint struct {
-		ClassRoomListener struct {
-			Host   string `mapstructure:"host"`
-			Method string `mapstructure:"method"`
-			Path   struct {
-				List string `mapstructure:"list"`
-				ID   string `mapstructure:"id"`
-				Slug string `mapstructure:"slug"`
-			} `mapstructure:"path"`
-		} `mapstructure:"classroom_listener"`
-	} `mapstructure:"endpoint"`
 	Gin struct {
 		Mode     string `mapstructure:"mode"`
 		RootPath string `mapstructure:"root_path"`
@@ -25,4 +14,16 @@ type Configs struct {
 			TrustedProxies string `mapstructure:"trusted_proxies"`
 		} `mapstructure:"configs"`
 	} `mapstructure:"gin"`
+	Swag struct {
+		Title       string `mapstructure:"title"`
+		Description string `mapstructure:"description"`
+		Version     string `mapstructure:"version"`
+		Host        string `mapstructure:"host"`
+		Schemes     string `mapstructure:"schemes"`
+	} `mapstructure:"swag"`
+	Secure struct {
+		Jwt struct {
+			Secret string `mapstructure:"secret"`
+		} `mapstructure:"jwt"`
+	} `mapstructure:"secure"`
 }

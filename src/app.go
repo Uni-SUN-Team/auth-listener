@@ -2,7 +2,9 @@ package src
 
 import (
 	"os"
+	"strings"
 	"unisun/api/unisun-authen-listener/docs"
+	"unisun/api/unisun-authen-listener/src/config/environment"
 	"unisun/api/unisun-authen-listener/src/constants"
 	"unisun/api/unisun-authen-listener/src/controllers"
 	"unisun/api/unisun-authen-listener/src/routes"
@@ -28,12 +30,15 @@ import (
 // @in                          header
 // @name                        Authorization
 func App() *gin.Engine {
-	docs.SwaggerInfo.Title = "AUTH LISTENER API"
-	docs.SwaggerInfo.Description = "Service for manage authenicate in application."
-	docs.SwaggerInfo.Version = os.Getenv(constants.VERSION)
-	docs.SwaggerInfo.Host = os.Getenv(constants.HOST)
-	docs.SwaggerInfo.BasePath = os.Getenv(constants.CONTEXT_PATH)
-	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	appEnv := environment.ENV.App
+	ginEnv := environment.ENV.Gin
+	swagEnv := environment.ENV.Swag
+	docs.SwaggerInfo.Title = swagEnv.Title
+	docs.SwaggerInfo.Description = swagEnv.Description
+	docs.SwaggerInfo.Version = swagEnv.Version
+	docs.SwaggerInfo.Host = swagEnv.Host
+	docs.SwaggerInfo.BasePath = strings.Join([]string{appEnv.ContextPath, ginEnv.RootPath, ginEnv.Version}, "/")
+	docs.SwaggerInfo.Schemes = strings.Split(swagEnv.Schemes, ",")
 
 	r := gin.Default()
 	r.SetTrustedProxies([]string{"127.0.0.1"})
